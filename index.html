@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineSpace // Premium Movie Finder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app-container">
+    <header class="navbar">
+      <div class="logo" id="logo-btn">
+        <div class="logo-icon">C</div>
+        Cine<span>Space</span>
+      </div>
+
+      <div class="nav-controls">
+        <nav class="nav-tabs">
+          <button class="tab-btn active" id="tab-discover" data-tab="discover">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="m16.2 7.8-2 4.2-4.2 2 2-4.2 4.2-2z" />
+            </svg>
+            Discover
+          </button>
+          <button class="tab-btn" id="tab-watchlist" data-tab="watchlist">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+            </svg>
+            Watchlist
+          </button>
+          <button class="tab-btn" id="tab-favorites" data-tab="favorites">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg>
+            Favorites
+          </button>
+        </nav>
+
+        <button class="icon-btn" id="settings-btn" title="API Configuration">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+
+      <section class="welcome-hero" id="welcome-banner">
+        <h1 class="welcome-title">Explore the Cinematic Universe</h1>
+        <p class="welcome-subtitle">Search for your favorite blockbusters, curate your watchlist, and write reviews to
+          share with the community.</p>
+      </section>
+
+      <div class="search-wrapper" id="search-section">
+        <form class="search-container" id="search-form">
+          <div class="search-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </div>
+          <input type="text" class="search-input" id="search-input"
+            placeholder="Search movies by title (e.g. Inception, Avengers)..." required autocomplete="off">
+          <button type="submit" class="search-btn">Search</button>
+        </form>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-group">
+          <div class="filter-group-item">
+            <label for="filter-genre" class="filter-label">Genre:</label>
+            <select id="filter-genre" class="filter-select">
+              <option value="all">All Genres</option>
+              <option value="action">Action</option>
+              <option value="adventure">Adventure</option>
+              <option value="animation">Animation</option>
+              <option value="comedy">Comedy</option>
+              <option value="crime">Crime</option>
+              <option value="drama">Drama</option>
+              <option value="fantasy">Fantasy</option>
+              <option value="sci-fi">Sci-Fi</option>
+              <option value="thriller">Thriller</option>
+            </select>
+          </div>
+
+          <div class="filter-group-item">
+            <label for="sort-by" class="filter-label">Sort:</label>
+            <select id="sort-by" class="filter-select">
+              <option value="relevance">Relevance</option>
+              <option value="year-desc">Year (Newest)</option>
+              <option value="year-asc">Year (Oldest)</option>
+              <option value="rating-desc">Rating (Highest)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="search-status" id="search-status">
+          Showing local mock database movies
+        </div>
+      </div>
+
+      <div class="movie-grid" id="movie-grid">
+      </div>
+
+    </main>
+
+    <footer class="footer">
+      <p>CineSpace © 2026. Made by <span>♥</span> Adhithya Jayawardhana.</p>
+    </footer>
+  </div>
+
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-container">
+      <button class="modal-close-btn" id="modal-close-btn" title="Close Details">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+
+      <div class="modal-left">
+        <img src="" alt="" class="modal-poster" id="modal-poster">
+      </div>
+
+      <div class="modal-right">
+        <div class="modal-header-actions">
+          <button class="modal-action-btn" id="modal-watchlist-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+            </svg>
+            <span>Watchlist</span>
+          </button>
+          <button class="modal-action-btn" id="modal-favorite-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg>
+            <span>Favorite</span>
+          </button>
+        </div>
+
+        <h2 class="modal-title" id="modal-title">Movie Title</h2>
+
+        <div class="modal-meta-row">
+          <span class="meta-badge" id="modal-rated">PG-13</span>
+          <span id="modal-year">2010</span>
+          <span>•</span>
+          <span id="modal-runtime">148 min</span>
+          <span>•</span>
+          <span id="modal-genre">Action, Sci-Fi</span>
+        </div>
+
+        <div class="modal-tabs">
+          <button class="modal-tab-btn active" id="btn-tab-info" data-modal-tab="info">Info</button>
+          <button class="modal-tab-btn" id="btn-tab-reviews" data-modal-tab="reviews">Reviews (<span
+              id="reviews-count">0</span>)</button>
+        </div>
+
+        <div class="modal-tab-content active" id="modal-tab-info">
+          <p class="movie-plot" id="modal-plot">Movie plot description text...</p>
+
+          <div class="details-grid">
+            <span class="details-label">Director:</span>
+            <span class="details-value" id="modal-director">-</span>
+
+            <span class="details-label">Writers:</span>
+            <span class="details-value" id="modal-writer">-</span>
+
+            <span class="details-label">Actors:</span>
+            <span class="details-value" id="modal-actors">-</span>
+
+            <span class="details-label">Awards:</span>
+            <span class="details-value" id="modal-awards">-</span>
+          </div>
+
+          <div class="modal-ratings" id="modal-ratings-container">
+          </div>
+        </div>
+
+        <div class="modal-tab-content" id="modal-tab-reviews">
+          <div class="reviews-section">
+
+            <div class="write-review-card">
+              <h3 class="write-review-title">Write a Review</h3>
+              <form id="review-form">
+                <div class="rating-input-row">
+                  <span class="filter-label">Your Rating:</span>
+                  <div class="star-input-group" id="star-input-group">
+                    <span class="star-icon" data-rating="1">★</span>
+                    <span class="star-icon" data-rating="2">★</span>
+                    <span class="star-icon" data-rating="3">★</span>
+                    <span class="star-icon" data-rating="4">★</span>
+                    <span class="star-icon" data-rating="5">★</span>
+                  </div>
+                </div>
+                <textarea class="review-textarea" id="review-input"
+                  placeholder="Share your thoughts about this movie..." required></textarea>
+                <button type="submit" class="submit-review-btn">Submit Review</button>
+              </form>
+            </div>
+
+            <div class="reviews-list-container" id="reviews-list-container">
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-modal" id="settings-modal">
+    <div class="settings-container">
+      <h2 class="settings-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+        API Key Configuration
+      </h2>
+      <p class="settings-desc">To query live movie data in real-time, please enter your OMDb API Key. Otherwise,
+        CineSpace will search a local mock catalog.</p>
+
+      <div class="settings-group">
+        <label for="api-key-input" class="settings-label">OMDb API Key:</label>
+        <input type="password" class="settings-input" id="api-key-input" placeholder="Enter OMDb API Key...">
+        <div id="api-status-display" class="api-status-badge status-disconnected">
+          Mock Mode Active
+        </div>
+      </div>
+
+      <div class="settings-actions">
+        <button class="btn-secondary" id="settings-reset-btn">Clear Key</button>
+        <button class="btn-secondary" id="settings-close-btn">Cancel</button>
+        <button class="btn-primary" id="settings-save-btn">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="config.js"></script>
+  <script src="mockData.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

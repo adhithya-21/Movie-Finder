@@ -1,0 +1,9 @@
+# Local configurations
+config.js
+
+# Dependency directories (if any)
+node_modules/
+
+# OS metadata
+.DS_Store
+Thumbs.db
