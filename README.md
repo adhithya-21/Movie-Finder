@@ -25,6 +25,8 @@ Movie Finder/
 ├── style.css            # Custom CSS theme, variables, grid layouts, and animations
 ├── app.js               # Main business logic, API routing, and localStorage controllers
 ├── mockData.js          # Seed database containing mock popular movies for offline testing
+├── config.js            # [NEW] Local configuration file containing OMDb API Key (Git-ignored)
+├── .gitignore           # [NEW] Tells Git to ignore sensitive configuration files
 └── README.md            # App manual
 ```
 
@@ -46,24 +48,36 @@ An API key is required to query live movies outside the mock database.
 Since this is a client-side static application, you can run it without any local server.
 1. Open the **Movie Finder** folder.
 2. Double-click [index.html](file:///c:/Users/TUF/Desktop/Movie%20Finder/index.html) (or open it with your web browser of choice).
-3. The app will immediately load in **Mock Mode**.
+3. The app will immediately load in **Mock Mode** (or live mode if pre-configured in `config.js`).
 
 ### Method 2: Running a Local Web Server
 To simulate a real web deployment:
 1. Open a terminal/command prompt.
-2. Navigate to the project directory:
+2. Navigate to the project directory.
+3. Run a simple local server (using Node.js):
    ```powershell
-   cd "C:\Users\TUF\Desktop\Movie Finder"
+   npx http-server
    ```
-3. Run a simple local server (using Python or Node.js):
-   - **Python 3:** `python -m http.server 3000`
-   - **Node.js (http-server):** `npx http-server`
-4. Open your browser and navigate to `http://localhost:3000`.
+4. Open your browser and navigate to `http://localhost:8080`.
 
 ---
 
 ## Configuring Your API Key
+
+You can configure your OMDb API Key using one of the following methods:
+
+### Method A: Local Configuration File (Recommended for Devs)
+1. Create/Open [config.js](file:///c:/Users/TUF/Desktop/Movie%20Finder/config.js) in the project root.
+2. Add your key inside the `CONFIG` object:
+   ```javascript
+   const CONFIG = {
+     OMDB_API_KEY: 'your_key_here'
+   };
+   ```
+3. The application will automatically detect this file and log in on load. Note that [config.js](file:///c:/Users/TUF/Desktop/Movie%20Finder/config.js) is ignored by [.gitignore](file:///c:/Users/TUF/Desktop/Movie%20Finder/.gitignore) so your key won't be leaked on GitHub.
+
+### Method B: Settings Modal (In-Browser)
 1. Once the app loads, click the **Gear Icon** (⚙️) in the top-right corner of the navigation bar.
 2. Enter your OMDb API Key in the settings field.
-3. Click **Save Settings**.
+3. Click **Save Settings** (which persists it in your browser's local storage).
 4. The status badge will change to **OMDb API Key Connected**, and searches will fetch live data instantly.
