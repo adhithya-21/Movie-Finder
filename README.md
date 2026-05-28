@@ -1,103 +1,245 @@
+````md
 # CineSpace 🍿 // Premium Movie Finder
 
-CineSpace is a premium, feature-rich movie search and curating application built purely using vanilla **HTML5, CSS3, and modern JavaScript**. It connects to the **OMDb API** to search the global cinematic databases, enrich metadata in real-time, and allow users to curate watchlists, store favorites, rate movies, and write persistent reviews.
+CineSpace is a premium, feature-rich movie search and curating application built purely using vanilla HTML5, CSS3, and modern JavaScript. It connects to the OMDb API to search the global cinematic databases, enrich metadata in real-time, and allow users to curate watchlists, store favorites, rate movies, and write persistent reviews.
 
 ---
 
-## Key Features
+# ✨ Key Features
 
-1. **Vibrant & Glassmorphic UI:** A dark mode interface with neon purple accents, backdrop-blur components, hover transformations, and micro-animations.
-2. **Dual Data Modes:**
-   - **Mock Mode (Default):** Ready to test immediately without any setup. Serves a pre-selected set of critically acclaimed movies.
-   - **OMDb Live Mode:** Connects to the live OMDb API using an API key.
-3. **Smart Detail Enrichment:** When searching, CineSpace retrieves full details for all matching movies in parallel. This enables instant client-side filtering by genre and sorting by rating/year.
-4. **Interactive Modal View:** Clicking on any movie displays a detailed profile including runtime, ratings (IMDb, Rotten Tomatoes, Metacritic), plot, cast, and custom reviews.
-5. **Personal Watchlist & Favorites:** Save films to your list with bookmark/heart badges that persist across page reloads.
-6. **Local Reviews Engine:** Write star ratings and reviews that are stored and rendered dynamically.
+- **Vibrant Glassmorphic UI**  
+  Stunning dark neon interface with backdrop blur, smooth hover effects, glowing accents, and micro-animations.
+
+- **Dual Theme Support** 🌗  
+  Switch seamlessly between:
+  - Dark Neon Glassmorphic Mode
+  - Clean Light Mode
+
+- **Dual Data Modes**
+  - **Mock Mode (Default):** Instantly test the app offline with curated movie data.
+  - **OMDb Live Mode:** Fetch live movie data directly from the OMDb API.
+
+- **Secure Express Backend Proxy** 🔒  
+  Integrated Express.js backend proxy for secure OMDb API communication without exposing API keys.
+
+- **Smart Detail Enrichment**  
+  Retrieves complete movie metadata in parallel for enhanced filtering and sorting by genre, IMDb rating, and release year.
+
+- **Interactive Movie Modal**  
+  View detailed movie information including:
+  - Runtime
+  - Plot
+  - Cast
+  - IMDb / Rotten Tomatoes / Metacritic ratings
+  - User reviews
+
+- **Personal Watchlist & Favorites**  
+  Save favorite movies and bookmarks with persistent local storage support.
+
+- **Local Reviews Engine**  
+  Add custom star ratings and reviews that remain stored between sessions.
+
+- **Dynamic Theme Persistence**  
+  User-selected theme preferences are automatically saved in local storage.
 
 ---
 
-## File Structure
+# 📁 File Structure
 
-```
+```plaintext
 Movie Finder/
-├── index.html           # Main structure, modals, templates, and SVG icons
-├── style.css            # Custom CSS theme, variables, grid layouts, and animations
-├── app.js               # Main business logic, API routing, and localStorage controllers
-├── mockData.js          # Seed database containing mock popular movies for offline testing
-├── config.js            # [NEW] Local configuration file containing OMDb API Key (Git-ignored)
-├── .gitignore           # [NEW] Tells Git to ignore sensitive configuration files
-└── README.md            # App manual
+├── backend/
+│   ├── server.js          # Express backend proxy server
+│   ├── routes/            # API route handlers
+│   └── .env               # Environment variables (Git-ignored)
+├── index.html             # Main structure, modals, and templates
+├── style.css              # UI themes, layouts, animations, and variables
+├── app.js                 # Core application logic and API controllers
+├── mockData.js            # Offline mock movie dataset
+├── config.js              # Local frontend configuration (Git-ignored)
+├── .gitignore             # Prevents sensitive files from being committed
+├── package.json           # Dependencies and scripts
+└── README.md              # Project documentation
+````
+
+---
+
+# 🎬 How to Get an OMDb API Key
+
+An API key is required for live movie searching.
+
+1. Visit the OMDb API Key Request page.
+2. Choose the **Free Tier** (1,000 requests/day).
+3. Submit your email address.
+4. Verify and activate your API key through the email link.
+
+---
+
+# ⚙️ Setup & Running Instructions
+
+## Method 1: Secure Backend Server (Recommended)
+
+Run CineSpace with the secure Express backend proxy.
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Start development server
+
+```bash
+npm run dev
+```
+
+### Open in browser
+
+```bash
+http://localhost:3000
+```
+
+Benefits:
+
+* Secure API handling
+* Environment variable support
+* Automatic backend detection
+* Production-ready architecture
+
+---
+
+## Method 2: Local Static Server
+
+Run the frontend without backend proxy.
+
+```bash
+npx http-server
+```
+
+Open:
+
+```bash
+http://localhost:8080
 ```
 
 ---
 
-## How to Get an OMDb API Key
+## Method 3: Instant Preview
 
-An API key is required to query live movies outside the mock database.
-1. Visit [OMDb API Key Request](http://www.omdbapi.com/apikey.aspx).
-2. Choose the **Free** tier (which allows up to 1,000 requests per day).
-3. Fill out the form with your email.
-4. Open the verification email sent to you to activate your key.
+Simply double-click:
 
----
+```plaintext
+index.html
+```
 
-## Setup & Running Instructions
-
-### Method 1: Secure Backend Server (Recommended)
-This runs the Express backend proxy to secure your OMDb API key and serves the frontend assets:
-1. Open a terminal in the project directory.
-2. Install dependencies:
-   ```powershell
-   npm install
-   ```
-3. Start the server in development mode:
-   ```powershell
-   npm run dev
-   ```
-4. Open your browser and navigate to `http://localhost:3000`.
-
-### Method 2: Running a Local Static Server
-To run without the backend proxy:
-1. Open a terminal in the project directory.
-2. Run http-server:
-   ```powershell
-   npx http-server
-   ```
-3. Open your browser and navigate to `http://localhost:8080`.
-
-### Method 3: Double-click (Instant Preview)
-Since this is a client-side static application, you can run it without any server:
-1. Open the project folder.
-2. Double-click [index.html](file:///c:/Users/TUF/Desktop/Movie%20Finder/index.html) in your browser.
-3. The app will load in Mock Mode (or live mode if configured in `config.js`).
+The application launches in Mock Mode automatically.
 
 ---
 
-## Configuring Your API Key
+# 🔑 Configuring Your API Key
 
-You can configure your OMDb API Key using one of the following methods:
+## Method A: Environment Variables (Recommended)
 
-### Method A: Environment Variable File (Recommended for Servers/Backends)
-1. Copy/rename `.env.example` to `.env`.
-2. Add your key inside the `.env` file:
-   ```env
-   OMDB_API_KEY=your_key_here
-   ```
-3. Restart the backend server. The frontend will automatically detect the backend and run in **Server Backend (Secured)** mode. The settings modal will lock the input field to prevent exposure. Note that `.env` is ignored by git.
+Create a `.env` file:
 
-### Method B: Local Configuration File (Client-Only Dev Mode)
-1. Create/Open [config.js](file:///c:/Users/TUF/Desktop/Movie%20Finder/config.js) in the project root.
-2. Add your key inside the `CONFIG` object:
-   ```javascript
-   const CONFIG = {
-     OMDB_API_KEY: 'your_key_here'
-   };
-   ```
-3. The application will detect this file on startup.
+```env
+OMDB_API_KEY=your_key_here
+```
 
-### Method C: Settings Modal (In-Browser)
-1. When running without a backend server, click the **Gear Icon** (⚙️) in the top-right corner.
-2. Enter your OMDb API Key.
-3. Click **Save Settings** to persist it in your browser's local storage.
+Advantages:
 
+* Prevents API exposure
+* Secure for deployment
+* Cleaner backend architecture
+
+---
+
+## Method B: Local Frontend Config
+
+Create a `config.js` file:
+
+```javascript
+const CONFIG = {
+  OMDB_API_KEY: 'your_key_here'
+};
+```
+
+---
+
+## Method C: In-App Settings Modal
+
+1. Click the ⚙️ Settings icon.
+2. Enter your OMDb API key.
+3. Save settings.
+
+The key will persist using local storage.
+
+---
+
+# 🚀 Latest Update
+
+## New Features Added
+
+* Implemented an **Express.js backend proxy** for secure OMDb API communication.
+* Added **environment variable support** using `.env` to safely manage API keys.
+* Introduced a fully functional **Light Mode Theme** alongside the existing dark glassmorphic interface.
+* Enhanced theme switching with smoother transitions and improved accessibility.
+* Added automatic backend/server mode detection.
+* Improved responsive UI behavior and animations.
+
+---
+
+# 🔒 Secure API Key Management
+
+CineSpace now supports secure backend architecture using Express.js.
+
+Instead of exposing your OMDb API key directly in frontend JavaScript, requests can now be routed securely through the backend proxy server.
+
+### Benefits
+
+* Prevents API key exposure
+* Improves deployment security
+* Supports `.env` configuration
+* Cleaner separation between frontend and backend
+
+---
+
+# 🌗 Theme Support
+
+Users can now switch between:
+
+* **Dark Neon Glassmorphic Theme**
+* **Modern Light Theme**
+
+Theme preferences are automatically persisted using local storage.
+
+---
+
+# 🛠 Updated Development Workflow
+
+```bash
+npm install
+npm run dev
+```
+
+Open:
+
+```bash
+http://localhost:3000
+```
+
+---
+
+# 📘 README Improvements
+
+Documentation now includes:
+
+* Backend proxy setup instructions
+* Environment variable configuration
+* Theme support documentation
+* Secure deployment recommendations
+* Updated project architecture
+* Improved setup workflow guidance
+
+```
+```
