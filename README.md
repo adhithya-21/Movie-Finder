@@ -1,4 +1,4 @@
-````md
+
 # CineSpace 🍿 // Premium Movie Finder
 
 CineSpace is a premium, feature-rich movie search and curating application built purely using vanilla HTML5, CSS3, and modern JavaScript. It connects to the OMDb API to search the global cinematic databases, enrich metadata in real-time, and allow users to curate watchlists, store favorites, rate movies, and write persistent reviews.
