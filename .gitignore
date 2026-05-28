@@ -1,5 +1,6 @@
 # Local configurations
 config.js
+.env
 
 # Dependency directories (if any)
 node_modules/

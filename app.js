@@ -1,5 +1,7 @@
 const state = {
   apiKey: localStorage.getItem('cinespace_api_key') || (typeof CONFIG !== 'undefined' ? CONFIG.OMDB_API_KEY : '') || '',
+  useBackend: false,
+  backendHasKey: false,
   currentTab: 'discover', 
   searchQuery: '',
   movies: [],          
@@ -57,8 +59,29 @@ const elements = {
   settingsCloseBtn: document.getElementById('settings-close-btn'),
   toastContainer: document.getElementById('toast-container')
 };
-function init() {
+async function checkBackendAvailability() {
+  try {
+    if (window.location.protocol.startsWith('http')) {
+      const response = await fetch('/api/status');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.status === 'ok') {
+          state.useBackend = true;
+          state.backendHasKey = data.hasApiKey;
+          return;
+        }
+      }
+    }
+  } catch (error) {
+    console.warn('Backend proxy server check failed, falling back to client-side API configuration:', error);
+  }
+  state.useBackend = false;
+  state.backendHasKey = false;
+}
+
+async function init() {
   setupEventListeners();
+  await checkBackendAvailability();
   updateAPIStatusUI();
   loadDiscoverMovies();
 }
@@ -127,7 +150,8 @@ async function loadDiscoverMovies() {
   }
   
   showSkeletonLoaders();
-  if (state.apiKey) {
+  const hasLiveAccess = state.useBackend ? state.backendHasKey : !!state.apiKey;
+  if (hasLiveAccess) {
     const popularTitles = ['Inception', 'The Dark Knight', 'Interstellar', 'Spirited Away', 'Pulp Fiction', 'Parasite', 'The Matrix', 'Gladiator'];
     try {
       elements.searchStatus.textContent = 'Curating trending list...';
@@ -146,7 +170,10 @@ async function loadDiscoverMovies() {
       useMockMoviesFallback('Unable to load recommendations. Showing offline selection.');
     }
   } else {
-    useMockMoviesFallback('Offline Mock Mode: enter an API key for live search');
+    const mockMessage = state.useBackend 
+      ? 'Offline Mock Mode: configure OMDB_API_KEY in server .env'
+      : 'Offline Mock Mode: enter an API key for live search';
+    useMockMoviesFallback(mockMessage);
   }
 }
 function useMockMoviesFallback(statusMessage) {
@@ -209,7 +236,8 @@ async function handleSearchSubmit(e) {
 async function executeMovieSearch(query) {
   showSkeletonLoaders();
   elements.searchStatus.textContent = `Searching for "${query}"...`;
-  if (!state.apiKey) {
+  const hasLiveAccess = state.useBackend ? state.backendHasKey : !!state.apiKey;
+  if (!hasLiveAccess) {
     setTimeout(() => {
       const lowerQuery = query.toLowerCase();
       const filtered = window.mockMovies.filter(m => 
@@ -227,7 +255,9 @@ async function executeMovieSearch(query) {
     return;
   }
   try {
-    const url = `https://www.omdbapi.com/?apikey=${state.apiKey}&s=${encodeURIComponent(query)}&type=movie`;
+    const url = state.useBackend
+      ? `/api/movies?s=${encodeURIComponent(query)}`
+      : `https://www.omdbapi.com/?apikey=${state.apiKey}&s=${encodeURIComponent(query)}&type=movie`;
     const response = await fetch(url);
     const data = await response.json();
     if (data.Response === 'True') {
@@ -253,7 +283,9 @@ async function executeMovieSearch(query) {
 }
 async function fetchMovieByTitle(title) {
   try {
-    const url = `https://www.omdbapi.com/?apikey=${state.apiKey}&t=${encodeURIComponent(title)}&plot=short`;
+    const url = state.useBackend
+      ? `/api/movies?t=${encodeURIComponent(title)}&plot=short`
+      : `https://www.omdbapi.com/?apikey=${state.apiKey}&t=${encodeURIComponent(title)}&plot=short`;
     const response = await fetch(url);
     const data = await response.json();
     return data.Response === 'True' ? data : null;
@@ -266,7 +298,8 @@ async function getMovieDetails(imdbID) {
   if (state.enrichedMovies[imdbID]) {
     return state.enrichedMovies[imdbID];
   }
-  if (!state.apiKey) {
+  const hasLiveAccess = state.useBackend ? state.backendHasKey : !!state.apiKey;
+  if (!hasLiveAccess) {
     const mock = window.mockMovies.find(m => m.imdbID === imdbID);
     if (mock) {
       state.enrichedMovies[imdbID] = mock;
@@ -275,7 +308,9 @@ async function getMovieDetails(imdbID) {
     return null;
   }
   try {
-    const url = `https://www.omdbapi.com/?apikey=${state.apiKey}&i=${imdbID}&plot=full`;
+    const url = state.useBackend
+      ? `/api/movies?i=${imdbID}&plot=full`
+      : `https://www.omdbapi.com/?apikey=${state.apiKey}&i=${imdbID}&plot=full`;
     const response = await fetch(url);
     const data = await response.json();
     if (data.Response === 'True') {
@@ -610,14 +645,34 @@ function escapeHTML(str) {
   );
 }
 function openSettingsModal() {
-  elements.apiKeyInput.value = state.apiKey;
+  if (state.useBackend) {
+    elements.apiKeyInput.value = '';
+    elements.apiKeyInput.disabled = true;
+    elements.apiKeyInput.placeholder = 'Securely configured on server (.env)';
+    elements.settingsSaveBtn.style.display = 'none';
+    elements.settingsResetBtn.style.display = 'none';
+  } else {
+    elements.apiKeyInput.value = state.apiKey;
+    elements.apiKeyInput.disabled = false;
+    elements.apiKeyInput.placeholder = 'Enter OMDb API Key...';
+    elements.settingsSaveBtn.style.display = 'inline-block';
+    elements.settingsResetBtn.style.display = 'inline-block';
+  }
   elements.settingsModal.classList.add('open');
 }
 function closeSettingsModal() {
   elements.settingsModal.classList.remove('open');
 }
 function updateAPIStatusUI() {
-  if (state.apiKey) {
+  if (state.useBackend) {
+    if (state.backendHasKey) {
+      elements.apiStatusDisplay.className = 'api-status-badge status-connected';
+      elements.apiStatusDisplay.textContent = 'Server Backend (Secured)';
+    } else {
+      elements.apiStatusDisplay.className = 'api-status-badge status-disconnected';
+      elements.apiStatusDisplay.textContent = 'Server Backend: Key Missing';
+    }
+  } else if (state.apiKey) {
     elements.apiStatusDisplay.className = 'api-status-badge status-connected';
     elements.apiStatusDisplay.textContent = 'OMDb API Key Connected';
   } else {

@@ -44,21 +44,33 @@ An API key is required to query live movies outside the mock database.
 
 ## Setup & Running Instructions
 
-### Method 1: Double-click (Instant Preview)
-Since this is a client-side static application, you can run it without any local server.
-1. Open the **Movie Finder** folder.
-2. Double-click [index.html](file:///c:/Users/TUF/Desktop/Movie%20Finder/index.html) (or open it with your web browser of choice).
-3. The app will immediately load in **Mock Mode** (or live mode if pre-configured in `config.js`).
+### Method 1: Secure Backend Server (Recommended)
+This runs the Express backend proxy to secure your OMDb API key and serves the frontend assets:
+1. Open a terminal in the project directory.
+2. Install dependencies:
+   ```powershell
+   npm install
+   ```
+3. Start the server in development mode:
+   ```powershell
+   npm run dev
+   ```
+4. Open your browser and navigate to `http://localhost:3000`.
 
-### Method 2: Running a Local Web Server
-To simulate a real web deployment:
-1. Open a terminal/command prompt.
-2. Navigate to the project directory.
-3. Run a simple local server (using Node.js):
+### Method 2: Running a Local Static Server
+To run without the backend proxy:
+1. Open a terminal in the project directory.
+2. Run http-server:
    ```powershell
    npx http-server
    ```
-4. Open your browser and navigate to `http://localhost:8080`.
+3. Open your browser and navigate to `http://localhost:8080`.
+
+### Method 3: Double-click (Instant Preview)
+Since this is a client-side static application, you can run it without any server:
+1. Open the project folder.
+2. Double-click [index.html](file:///c:/Users/TUF/Desktop/Movie%20Finder/index.html) in your browser.
+3. The app will load in Mock Mode (or live mode if configured in `config.js`).
 
 ---
 
@@ -66,7 +78,15 @@ To simulate a real web deployment:
 
 You can configure your OMDb API Key using one of the following methods:
 
-### Method A: Local Configuration File (Recommended for Devs)
+### Method A: Environment Variable File (Recommended for Servers/Backends)
+1. Copy/rename `.env.example` to `.env`.
+2. Add your key inside the `.env` file:
+   ```env
+   OMDB_API_KEY=your_key_here
+   ```
+3. Restart the backend server. The frontend will automatically detect the backend and run in **Server Backend (Secured)** mode. The settings modal will lock the input field to prevent exposure. Note that `.env` is ignored by git.
+
+### Method B: Local Configuration File (Client-Only Dev Mode)
 1. Create/Open [config.js](file:///c:/Users/TUF/Desktop/Movie%20Finder/config.js) in the project root.
 2. Add your key inside the `CONFIG` object:
    ```javascript
@@ -74,10 +94,10 @@ You can configure your OMDb API Key using one of the following methods:
      OMDB_API_KEY: 'your_key_here'
    };
    ```
-3. The application will automatically detect this file and log in on load. Note that [config.js](file:///c:/Users/TUF/Desktop/Movie%20Finder/config.js) is ignored by [.gitignore](file:///c:/Users/TUF/Desktop/Movie%20Finder/.gitignore) so your key won't be leaked on GitHub.
+3. The application will detect this file on startup.
 
-### Method B: Settings Modal (In-Browser)
-1. Once the app loads, click the **Gear Icon** (⚙️) in the top-right corner of the navigation bar.
-2. Enter your OMDb API Key in the settings field.
-3. Click **Save Settings** (which persists it in your browser's local storage).
-4. The status badge will change to **OMDb API Key Connected**, and searches will fetch live data instantly.
+### Method C: Settings Modal (In-Browser)
+1. When running without a backend server, click the **Gear Icon** (⚙️) in the top-right corner.
+2. Enter your OMDb API Key.
+3. Click **Save Settings** to persist it in your browser's local storage.
+
